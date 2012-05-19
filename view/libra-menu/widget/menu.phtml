@@ -1,0 +1,15 @@
+<h4 style="margin-left: 5px">Menu</h4>
+<?php //echo $this->navigation()->menu()->setUlClass('nav nav-list') ?>
+<ul class="nav nav-list">
+<?php
+$class = '';
+foreach ($menu as $item) {
+    if (isset($routeMatch['alias'])) {
+        $class = $routeMatch['alias']  == $item->alias ? ' class="active"' : '';
+    }
+    $url = $this->url('default', array('controller' => $item['controller']));
+    echo "<li$class><a href=\"$url\">".$this->escape($item['title'])."</a></li>";
+}
+?>
+  <li><?php echo $this->_('CONTACTS_INFO') ?></li>
+</ul>
