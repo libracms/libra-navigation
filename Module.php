@@ -2,16 +2,15 @@
 
 namespace LibraMenu;
 
-use Zend\Module\Manager,
-    Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider;
+use Zend\ModuleManager\ModuleManager,
+    Zend\ModuleManager\Feature\AutoloaderProviderInterface,
+    Zend\ModuleManager\Feature\ConfigProviderInterface,
+    Zend\Mvc\MvcEvent;
 
-class Module implements AutoloaderProvider
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
-    public function init(Manager $moduleManager)
+    public function init(ModuleManager $moduleManager)
     {
-        $events = StaticEventManager::getInstance();
-        $events->attach('bootstrap', 'bootstrap', array($this, 'initMenu'));
     }
 
     public function getAutoloaderConfig()
@@ -30,12 +29,19 @@ class Module implements AutoloaderProvider
         return include __DIR__ . '/config/module.config.php';
     }
 
-    public function initMenu($e)
+    public function onBootstrap(MvcEvent $e)
     {
-        $app       = $e->getParam('application');
-        $events    = $app->events();
-        $locator   = $app->getLocator();
-        $menu      = $locator->get('LibraMenu\Widget\Menu');
+        $this->initMenu($e);
+    }
+
+    public function initMenu(MvcEvent $e)
+    {
+        $app        = $e->getApplication();
+        $events     = $app->events();
+        //$locator   = $app->getServiceManager();
+        //$locator   = $app->getLocator();
+        //$menu      = $locator->get('LibraMenu\Widget\Menu');
+        $menu       = new \LibraMenu\Widget\Menu;
         $events->attach('dispatch', array($menu, 'addMenu'));
     }
 

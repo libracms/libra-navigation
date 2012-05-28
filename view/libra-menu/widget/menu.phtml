@@ -7,9 +7,12 @@ foreach ($menu as $item) {
     if (isset($routeMatch['alias'])) {
         $class = $routeMatch['alias']  == $item->alias ? ' class="active"' : '';
     }
-    $url = $this->url('default', array('controller' => $item['controller']));
+    $router = isset($item['router']) ? $item['router'] : 'default';
+    $params = isset($item['params']) ? $item['params'] : array();
+    $url = $this->url($router, $params);
     echo "<li$class><a href=\"$url\">".$this->escape($item['title'])."</a></li>";
 }
 ?>
+  <li><?php echo $this->url('libra-article') ?></li>
   <li><?php echo $this->_('CONTACTS_INFO') ?></li>
 </ul>
