@@ -1,6 +1,6 @@
 <?php
 
-namespace LibraMenu;
+namespace LibraNavigation;
 
 use Zend\ModuleManager\ModuleManager,
     Zend\ModuleManager\Feature\AutoloaderProviderInterface,
@@ -41,7 +41,7 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
         //$locator   = $app->getServiceManager();
         //$locator   = $app->getLocator();
         //$menu      = $locator->get('LibraMenu\Widget\Menu');
-        $menu       = new \LibraMenu\Widget\Menu;
+        $menu       = new \LibraNavigation\Widget\Menu;
         $events->attach('dispatch', array($menu, 'addMenu'));
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace LibraMenu\Widget;
+namespace LibraNavigation\Widget;
 
 use Zend\View\Model\ViewModel,
     Zend\Mvc\MvcEvent;

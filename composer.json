@@ -1,8 +1,8 @@
 {
-    "name":         "libra/",
+    "name":         "libra/libra-navigation",
     "type":         "library",
     //"version":      "0.0.1",
-    "description":  "Skeleton module for Libra CMS",
+    "description":  "Add navigation aware to Libra CMS",
     "keywords":     ["zf", "zf2", "zendframework", "cms"],
     "homepage":     "http://www.libra-cms.ejoom.com",
     "time":         "2012-05-16",
