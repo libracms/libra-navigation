@@ -6,8 +6,13 @@ use Zend\ModuleManager\ModuleManager,
     Zend\ModuleManager\Feature\AutoloaderProviderInterface,
     Zend\ModuleManager\Feature\ConfigProviderInterface,
     Zend\Mvc\MvcEvent;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
 
-class Module implements AutoloaderProviderInterface, ConfigProviderInterface
+class Module implements
+    AutoloaderProviderInterface,
+    ConfigProviderInterface,
+    ServiceProviderInterface
+
 {
     public function init(ModuleManager $moduleManager)
     {
@@ -37,12 +42,25 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     public function initMenu(MvcEvent $e)
     {
         $app        = $e->getApplication();
-        $events     = $app->events();
+        $events     = $app->getEventManager();
         //$locator   = $app->getServiceManager();
         //$locator   = $app->getLocator();
         //$menu      = $locator->get('LibraMenu\Widget\Menu');
         $menu       = new \LibraNavigation\Widget\Menu;
         $events->attach('dispatch', array($menu, 'addMenu'));
+    }
+
+    public function getServiceConfiguration()
+    {
+        return array(
+            'invokables' => array(
+            ),
+            'factories' => array(
+                'some' => function ($sm) {
+                    return new \stdClass();
+                },
+            ),
+        );
     }
 
 }

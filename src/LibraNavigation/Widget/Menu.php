@@ -47,10 +47,30 @@ class Menu
                 'label'      => 'Special offer this week only!2',
                 'uri'        => $phpRenderer->url('libra-article', array()),
             ),
+            array(
+                'label'      => 'rus article uri',
+                'uri'        => $phpRenderer->url('libra-article', array('alias' => 'ru-page')),
+            ),
+            array(
+                'label'      => 'Uri for FAQ',
+                'uri'        => $phpRenderer->url('libra-article', array('alias' => 'faq')),
+            ),
+            array(
+                'label'      => 'Rus article',
+                'route'      => 'libra-article',
+                'module'     => 'libra-article',
+                'controller' => 'index',
+                'action'     => 'index',
+                'alias'      => 'ru-page',
+                'param'      => 'ru-page',
+                //'visible'    => false, // not visible
+            ),
         );
 
         $urlHelper = $phpRenderer->plugin('url')->setRouteMatch($e->getRouteMatch());
-        \Zend\Navigation\Page\Mvc::setDefaultUrlHelper($urlHelper);
+        $router = $e->getRouter();
+        \Zend\Navigation\Page\Mvc::setDefaultRouter($router);
+        //\Zend\Navigation\Page\Mvc::setDefaultUrlHelper($urlHelper);
         $navigation = new \Zend\Navigation\Navigation($pages);
 
         //$view  = $e->getViewModel();
