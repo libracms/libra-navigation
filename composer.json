@@ -26,9 +26,6 @@
     },
 
     "provide": {
-        "libra/libra":                      "dev-default",
-        "libra/jquery-assets":              "dev-default",
-        "libra/twitter-bootstrap-assets":   "dev-default"
     },
 
     "sugest": {
