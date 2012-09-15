@@ -1,18 +1,18 @@
 {
     "name":         "libra/libra-navigation",
     "type":         "library",
-    //"version":      "0.0.1",
+    "version":      "0.2.0",
     "description":  "Add navigation aware to Libra CMS",
-    "keywords":     ["zf", "zf2", "zendframework", "cms"],
+    "keywords":     ["zf", "zf2", "zendframework", "cms", "libra"],
     "homepage":     "http://www.libra-cms.ejoom.com",
     "time":         "2012-05-16",
     "licence":      "BSD-3-Clause",
     "authors": [
-        {'name': 'duke', 'email': 'duke@ejoom.com', 'role': 'maintainer', 'homepage': 'http://www.ejoom.com'}
+        {"name": "Vitalii Nagara", "email": "duke@ejoom.com", "role": "contributer", "homepage": ""}
     ],
 
     "require": {
-        "php":          ">=5.3.3"
+        "libra/libra-app":                  "dev-default"
     },
 
     "require-dev": {
@@ -20,11 +20,15 @@
     },
 
     "autoload": {
-        "psr-0": {"Libra\\Skeleton": "src"}
+        "psr-0": {"Libra\\Navigation": "src"},
+        "classmap": ["Module.php"]
     },
 
     "provide": {
-      
+        "php":                              ">=5.3.3",
+        "libra/libra":                      "dev-default",
+        "libra/jquery-assets":              "dev-default",
+        "libra/twitter-bootstrap-assets":   "dev-default"
     },
 
     "sugest": {

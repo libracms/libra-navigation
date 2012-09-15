@@ -56,22 +56,32 @@ class Menu
                 'uri'        => $phpRenderer->url('libra-article', array('alias' => 'faq')),
             ),
             array(
-                'label'      => 'Rus article',
+                'label'      => 'FAQ',
                 'route'      => 'libra-article',
-                'module'     => 'libra-article',
                 'controller' => 'index',
                 'action'     => 'index',
-                'alias'      => 'ru-page',
-                'param'      => 'ru-page',
+                'params'     => array(
+                    'alias' => 'faq',
+                ),
+                //'visible'    => false, // not visible
+            ),
+            array(
+                'label'      => 'Rus article',
+                'route'      => 'libra-article',
+                'controller' => 'index',
+                'action'     => 'index',
+                'params'     => array(
+                    'alias' => 'ru-page',
+                ),
                 //'visible'    => false, // not visible
             ),
         );
 
-        $urlHelper = $phpRenderer->plugin('url')->setRouteMatch($e->getRouteMatch());
         $router = $e->getRouter();
         \Zend\Navigation\Page\Mvc::setDefaultRouter($router);
-        //\Zend\Navigation\Page\Mvc::setDefaultUrlHelper($urlHelper);
-        $navigation = new \Zend\Navigation\Navigation($pages);
+        $a = $e->getApplication()->getServiceManager()->get('someFactory');  //test
+        $navigation = $e->getApplication()->getServiceManager()->get('Zend\Navigation\Navigation');
+        $navigation->addPages($pages);
 
         //$view  = $e->getViewModel();
         //$view->navigation = $navigation;  // OR $view->widget()->add('navigation', $navigation');

@@ -46,19 +46,16 @@ class Module implements
         //$locator   = $app->getServiceManager();
         //$locator   = $app->getLocator();
         //$menu      = $locator->get('LibraMenu\Widget\Menu');
-        $menu       = new \LibraNavigation\Widget\Menu;
-        $events->attach('dispatch', array($menu, 'addMenu'));
+        //$menu       = new \LibraNavigation\Widget\Menu;
+        //$events->attach('dispatch', array($menu, 'addMenu'));
     }
 
-    public function getServiceConfiguration()
+    public function getServiceConfig()
     {
         return array(
             'invokables' => array(
             ),
             'factories' => array(
-                'some' => function ($sm) {
-                    return new \stdClass();
-                },
             ),
         );
     }

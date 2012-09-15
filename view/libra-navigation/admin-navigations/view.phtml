@@ -1,0 +1,20 @@
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th width="1%"><?php echo $this->translate('#') ?></th>
+            <th><?php echo $this->translate('Name') ?></th>
+            <th width="150"><?php echo $this->translate('Quantity of elements') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+<?php
+    $i = 0;
+    foreach ($navigations as $name => $items) { ?>
+        <tr>
+            <td><?php echo ++$i ?></td>
+            <td><a href="<?php echo $this->url('admin/libra-navigation/navigation', array('name' => $name)) ?>"><?php echo $name ?></a></td>
+            <td><?php echo count($items) ?></td>
+        </tr>
+    <?php } ?>
+    </tbody>
+</table>

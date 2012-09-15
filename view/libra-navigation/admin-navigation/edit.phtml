@@ -1,0 +1,29 @@
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th width="1%"><?php echo $this->translate('#') ?></th>
+            <th width="1%"><?php echo $this->translate('Key') ?></th>
+            <th width="50"><?php echo $this->translate('Type') ?></th>
+            <th width="150"><?php echo $this->translate('Route') ?></th>
+            <th><?php echo $this->translate('Label') ?></th>
+            <th><?php echo $this->translate('Href') ?></th>
+            <th width="150"><?php echo $this->translate('Order') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+<?php
+    $counter = 0;
+    $navigationArray = $navigation->toArray();
+    foreach ($navigation as $key => $item) { ?>
+        <tr>
+            <td><?php echo $counter+1 ?></td>
+            <td><a href="<?php echo $this->url('admin/libra-navigation/navigation', array('name' => $name, 'key' => $counter)) ?>"><?php echo $counter ?></a></td>
+            <td><?php echo substr(strrchr($navigationArray[$counter]['type'], "\\"), 1) ?></td>
+            <td><?php echo method_exists($item, 'getRoute') ? $item->getRoute() : '' ?></td>
+            <td><?php echo $item->getLabel() ?></td>
+            <td><?php echo $item->getHref() ?></td>
+            <td><?php echo $item->getOrder() ?></td>
+        </tr>
+<?php $counter++; } ?>
+    </tbody>
+</table>
