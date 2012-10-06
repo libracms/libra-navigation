@@ -2,6 +2,28 @@
 return array(
     'router' => array(
         'routes' => array(
+            'libra-navigation' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/',
+                    'defaults' => array(
+                        'module'     => 'libra-navigation',
+                    ),
+                ),
+                'child_routes' => array(
+                    'sitemap' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => 'sitemap.xml',
+                            'defaults' => array(
+                                'module'     => 'libra-navigation',
+                                'controller' => 'sitemap',
+                                'action'     => 'generate',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
             'admin' => array(
                 'child_routes' => array(
                     'libra-navigation' => array(
@@ -50,6 +72,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
+            'libra-navigation/sitemap'      => 'LibraNavigation\Controller\SitemapController',
             'libra-navigation/admin-navigations' => 'LibraNavigation\Controller\AdminNavigationsController',
             'libra-navigation/admin-navigation'  => 'LibraNavigation\Controller\AdminNavigationController',
         ),

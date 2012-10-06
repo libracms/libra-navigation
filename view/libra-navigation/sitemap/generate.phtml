@@ -1,0 +1,14 @@
+<?php echo '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <?php foreach ($urlset as $url) {
+      if (!isset($url['loc'])) continue; //error data
+      echo '  <url>' . PHP_EOL;
+      echo '    <loc>' . $url['loc'] . '</loc>' . PHP_EOL;
+      if (isset($url['lastmod'])) echo '    <lastmod>' . $url['lastmod'] . '</lastmod>' . PHP_EOL;
+      if (isset($url['changefreq'])) echo '    <changefreq>' . $url['changefreq'] . '</changefreq>' . PHP_EOL;
+      if (isset($url['priority'])) echo '    <priority>' . $url['priority'] . '</priority>' . PHP_EOL;
+      echo '  </url>' . PHP_EOL;
+  } ?>
+</urlset>

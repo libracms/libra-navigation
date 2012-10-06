@@ -2,11 +2,11 @@
 
 namespace LibraNavigation;
 
-use Zend\ModuleManager\ModuleManager,
-    Zend\ModuleManager\Feature\AutoloaderProviderInterface,
-    Zend\ModuleManager\Feature\ConfigProviderInterface,
-    Zend\Mvc\MvcEvent;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ModuleManager\ModuleManager;
+use Zend\Mvc\MvcEvent;
 
 class Module implements
     AutoloaderProviderInterface,
