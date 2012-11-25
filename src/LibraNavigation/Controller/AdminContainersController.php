@@ -14,14 +14,14 @@ use Zend\Mvc\Controller\AbstractActionController;
  *
  * @author duke
  */
-class AdminNavigationsController extends AbstractActionController
+class AdminContainersController extends AbstractActionController
 {
     public function viewAction()
     {
-        $navigations = include 'config/constructed/navigation.php';
-        $navigations = $navigations['navigation'];
+        $navigation = include 'config/constructed/navigation.php';
+        $navigation = $navigation['navigation'];
         return array(
-            'navigations' => $navigations,
+            'navigation' => $navigation,
         );
     }
 }

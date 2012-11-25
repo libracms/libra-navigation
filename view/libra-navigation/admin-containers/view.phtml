@@ -9,11 +9,11 @@
     <tbody>
 <?php
     $i = 0;
-    foreach ($navigations as $name => $items) { ?>
+    foreach ($navigation as $name => $container) { ?>
         <tr>
             <td><?php echo ++$i ?></td>
-            <td><a href="<?php echo $this->url('admin/libra-navigation/navigation', array('name' => $name)) ?>"><?php echo $name ?></a></td>
-            <td><?php echo count($items) ?></td>
+            <td><a href="<?php echo $this->url('admin/libra-navigation/pages', array('container' => $name)) ?>"><?php echo $name ?></a></td>
+            <td><?php echo count($container) ?></td>
         </tr>
     <?php } ?>
     </tbody>

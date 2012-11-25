@@ -14,7 +14,7 @@ use Zend\Mvc\Controller\AbstractActionController;
  *
  * @author duke
  */
-class AdminNavigationController extends AbstractActionController
+class AdminContainerController extends AbstractActionController
 {
     public function editAction()
     {

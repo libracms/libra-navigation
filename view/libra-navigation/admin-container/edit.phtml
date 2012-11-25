@@ -17,7 +17,7 @@
     foreach ($navigation as $key => $item) { ?>
         <tr>
             <td><?php echo $counter+1 ?></td>
-            <td><a href="<?php echo $this->url('admin/libra-navigation/navigation', array('name' => $name, 'key' => $counter)) ?>"><?php echo $counter ?></a></td>
+            <td><a href="<?php echo $this->url('admin/libra-navigation/container', array('name' => $name, 'key' => $counter)) ?>"><?php echo $counter ?></a></td>
             <td><?php echo substr(strrchr($navigationArray[$counter]['type'], "\\"), 1) ?></td>
             <td><?php echo method_exists($item, 'getRoute') ? $item->getRoute() : '' ?></td>
             <td><?php echo $item->getLabel() ?></td>
