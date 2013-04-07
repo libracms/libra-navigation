@@ -79,11 +79,6 @@ return array(
                                     ),
                                 ),
                                 'may_terminate' => true,
-                                'child_routes' => array(
-                                    'query' => array(
-                                        'type' => 'Query',
-                                    ),
-                                ),
                             ),
                             'page' => array(
                                 'type' => 'Segment',
