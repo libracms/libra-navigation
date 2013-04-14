@@ -42,6 +42,7 @@ class SitemapController extends AbstractActionController
             'urlset' => $urlset,
         ));
         $view->setTerminal(true);
+        $this->getResponse()->getHeaders()->addHeaderLine('Content-Type: text/xml; charset=utf-8');
         return $view;
     }
 
