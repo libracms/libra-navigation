@@ -20,7 +20,7 @@ class AdminPagesController extends AbstractActionController
 {
     public function listAction()
     {
-        $name = $this->params('name', 'default');
+        $name = 'default';
         $id = $this->params()->fromRoute('id', null);
         $config = $this->getServiceLocator()->get('config');
         $pages = $config['navigation'][$name];

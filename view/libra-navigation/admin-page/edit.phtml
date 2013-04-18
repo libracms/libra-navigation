@@ -1,0 +1,13 @@
+<h2><?php echo $this->translate(sprintf('Container name: %s', $name))?></h2>
+<?php if (0 && $id !== null ) { ?><h3><?php echo $this->translate(sprintf('Parent page label: %s', $page->getParent()->getLabel() ))?></h3> <?php } ?>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('admin/libra-navigation/page', array(
+    'action' => 'edit',
+    'id'     => $id,
+)));
+$form->prepare();
+
+echo $this->form($form)
+?>

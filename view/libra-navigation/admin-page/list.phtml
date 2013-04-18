@@ -1,0 +1,64 @@
+<h2><?php echo $this->translate(sprintf('Container name: %s', $name)) //@todo: should do dropdown ?></h2>
+<?php if ($id === null ) { ?><h3><?php echo $this->translate(sprintf('Menus')); ?></h3><?php } ?>
+<?php if ($id === '0' ) { ?><h3><?php echo $this->translate(sprintf('Submenus')); ?></h3><?php } ?>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th width="1%"><?php echo $this->translate('#') ?></th>
+            <th width="50"><?php echo $this->translate('Type') ?></th>
+            <?php if ($id === null ) { ?><th><?php echo $this->translate(sprintf('Name')); ?></th><?php } ?>
+            <th width="150"><?php echo $this->translate('Route') ?></th>
+            <th><?php echo $this->translate('Label') ?></th>
+            <th><?php echo $this->translate('Href') ?></th>
+            <th width="50"><?php echo $this->translate('Order') ?></th>
+            <th width="60"><?php echo $this->translate('Pages #') ?></th>
+            <th width="1%"><?php echo $this->translate('') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+<?php
+    $counter = 0;
+    //$container = $container->toArray();
+    foreach ($container as $key => $item) {
+        $newId = $id === null ? $counter : "$id.$counter";
+        $url = $this->url('admin/libra-navigation/pages',
+            array('action' => 'list', 'id' => $newId)
+        );
+        $urlEdit = $this->url('admin/libra-navigation/page',
+            array('action' => 'edit', 'id' => $newId)
+        );
+        ?>
+        <tr>
+            <td>
+                <?php echo $counter+1 ?>
+            </td>
+            <td><?php echo substr(strrchr(get_class($item), '\\'), 1) ?></td>
+            <?php if ($id === null ) { ?><td><?php echo $item->get('__name') ?></td><?php } ?>
+            <td>
+                <?php echo method_exists($item, 'getRoute') ? $item->getRoute() : '' ?>
+            </td>
+            <td>
+                <input type="checkbox" name="ids[]" value="<?php echo $counter ?>" style="margin-right: 5px">
+                <?php if ($item->count() > 0) { ?>
+                <a href="<?php echo $url ?>"><?php echo $item->getLabel() ?></a>
+                <?php } else {
+                    echo $item->getLabel();
+                } ?>
+            </td>
+            <td><?php echo $item->getHref() ?></td>
+            <td><?php echo $item->getOrder() ?></td>
+            <td><?php echo $item->count() ?></td>
+            <td>
+                <div class="entity-actions">
+                    <i class="icon-tasks entity-actions-enter"></i>
+                    <div class="entity-actions-group">
+                        <a href="#"><i class="icon-ok entity-action-left" title="Set visible"></i></a>
+                        <a href="<?php echo $urlEdit ?>"><i class="icon-pencil entity-action-up" title="Edit"></i></a>
+                        <a href="#"><i class="icon-off entity-action-down" title="Unset visible"></i></a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+<?php $counter++; } ?>
+    </tbody>
+</table>
