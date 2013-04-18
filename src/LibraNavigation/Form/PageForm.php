@@ -53,29 +53,8 @@ class PageForm extends Form
                 'class' => 'span12',
             ),
         ));
-//        $fildset = new \Zend\Form\Fieldset('params');
-//        $fildset->add(array(
-//            'name' => 'alias',
-//            'options' => array(
-//                'label' => 'Alias:',
-//            ),
-//            'attributes' => array(
-//                'type' => 'text',
-//                'class' => 'span12',
-//            ),
-//        ));
         $fildset = new PageParamsFieldset();
         $this->add($fildset);
-//        $this->add(array(
-//            'name' => 'alias',
-//            'options' => array(
-//                'label' => 'Alias:',
-//            ),
-//            'attributes' => array(
-//                'type' => 'text',
-//                'class' => 'span12',
-//            ),
-//        ));
         $this->add(array(
             'name' => 'order',
             'options' => array(

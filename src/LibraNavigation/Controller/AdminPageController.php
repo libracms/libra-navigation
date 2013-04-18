@@ -50,12 +50,8 @@ class AdminPageController extends AbstractActionController
         $form = new PageForm();
         $form->setInputFilter(new PageFilter);
         $data = $page->toArray();
-        //$data['params']['alias'] = 'sdf sdsf f $%f   []f ';
-        $form->setData($post);
-        $form->isValid();
-        $res = $form->getData(\Zend\Form\FormInterface::VALUES_AS_ARRAY);
-        $filter = new \Zend\Filter\Word\SeparatorToDash();
-        $res['params']['alias'] = $filter->filter($res['params']['alias']);
+        //$form->setData($post);
+        //$form->isValid();
         return array(
             'container' => $container,
             'name'      => $name,
