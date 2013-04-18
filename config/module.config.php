@@ -67,15 +67,15 @@ return array(
                             'pages' => array(
                                 'type' => 'Segment',
                                 'options' => array(
-                                    'route' => '/pages[/:action[/:name]]',
+                                    'route' => '/pages[/:action[/:id]]',
                                     'constraints' => array(
                                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                        'name'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                        'id'         => '[0-9][0-9\.]*',
                                     ),
                                     'defaults' => array(
                                         'controller' => 'admin-pages',
                                         'action'     => 'list',
-                                        'name'       => 'default',
+                                        'id'         => null,
                                     ),
                                 ),
                                 'may_terminate' => true,
@@ -83,10 +83,10 @@ return array(
                             'page' => array(
                                 'type' => 'Segment',
                                 'options' => array(
-                                    'route' => '/page/:action[/:name]',
+                                    'route' => '/page/:action[/:id]',
                                     'constraints' => array(
                                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                        'name'       => '[a-zA-Z0-9_-]*',
+                                        'id'         => '[0-9][0-9\.]*',
                                     ),
                                     'defaults' => array(
                                         'controller' => 'admin-page',

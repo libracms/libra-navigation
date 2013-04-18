@@ -16,22 +16,20 @@ use Zend\Navigation\Navigation;
  *
  * @author duke
  */
-class AdminPagesController extends AbstractActionController
+class AdminPageController extends AbstractActionController
 {
-    public function listAction()
+    public function editAction()
     {
-        $name = $this->params('name', 'default');
-        $id = $this->params()->fromRoute('id', null);
-        $config = $this->getServiceLocator()->get('config');
+        $name = 'default';
+        $id = $this->params('id', null);
+        if ($id === null) return false; //undefined id or create new
+
+        $ids = explode('.', $id);
+        $config = $this->getServiceLocator()->get('Config')->get('navigation')->get($name);
+        $config = include 'config/constructed/navigation.php';
         $pages = $config['navigation'][$name];
         if (isset($id)) {
-            $ids = explode('.', $id);
-            foreach ($ids as $key => $item) {
-                if (!isset($pages[$item]['pages']) || count($pages[$item]['pages']) == 0) {
-                    return $this->notFoundAction();
-                }
-                $pages = $pages[$item]['pages'];
-            }
+            $pages = $pages[$id]['pages'];
         }
         PageMvc::setDefaultRouter($this->getEvent()->getRouter());
         $container = new Navigation($pages);
