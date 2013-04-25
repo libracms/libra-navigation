@@ -33,7 +33,7 @@
                 <?php echo $counter+1 ?>
             </td>
             <td><?php echo substr(strrchr(get_class($item), '\\'), 1) ?></td>
-            <?php if ($id === null ) { ?><td><?php echo $item->get('__name') ?></td><?php } ?>
+            <?php if ($id === null ) { ?><td><?php echo $item->get('_name') ?></td><?php } ?>
             <td>
                 <?php echo method_exists($item, 'getRoute') ? $item->getRoute() : '' ?>
             </td>
