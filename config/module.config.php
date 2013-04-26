@@ -114,4 +114,9 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
+
+    'libra_navigation' => array(
+        'container_name' => 'default'
+    )
+
 );

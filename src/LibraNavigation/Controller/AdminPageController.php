@@ -43,28 +43,63 @@ class AdminPageController extends AbstractActionController
         }
     }
 
-    public function editAction()
+    /**
+     * This will change value if it containes new lines aka "\n"
+     * @param array $var
+     * @return string
+     */
+    protected function varExportPretty($var)
     {
-        $name = 'default';
-        $id = $this->params('id', null);
-        if ($id === null) return false; //undefined id or create new menu
+        $str = "<?php\nreturn " . var_export($var, true) . ";\n";
+        $str = preg_replace("/=> \n + array/", '=> array', $str);
+        $str = preg_replace_callback(
+            '/^(  )+/m',
+            function($m) {
+                return str_repeat($m[0], 2);
+            },
+            $str
+        );
+        $str = preg_replace("/^( +)[0-9]+ => /m", '$1', $str);
 
-        $config = $this->getServiceLocator()->get('config');
-        $pages_array = $config['navigation'][$name];
-        $navigationDefault = new Navigation($pages_array);
-        $ids = explode('.', $id);
+        return $str;
+    }
+
+    /**
+     *
+     * @param string $idString
+     * @param \Zend\Navigation\Navigation $container
+     * @return \Zend\Navigation\Page\AbstractPage
+     */
+    protected function findPageById($idString, Navigation $container)
+    {
+        $ids = explode('.', $idString);
         $lastId = array_pop($ids);
-        foreach ($ids as $key => $item) {
-            if (!isset($pages_array[$item]['pages']) || count($pages_array[$item]['pages']) == 0) {
+        foreach ($ids as $id) {
+            $container = array_values($container->getPages());
+            if (!isset($container[$id]) || !$container[$id]->hasPages()) {
                 return $this->notFoundAction(); //@todo need implement create action
             }
-            $found_pages_array = $pages_array[$item]['pages'];
+            $container = $container[$id];
         }
-        PageMvc::setDefaultRouter($this->getEvent()->getRouter());
-        $container = new Navigation($found_pages_array);
-        $pages = array_values($container->getPages());
-        $page = $pages[$lastId];
+        $container = array_values($container->getPages());
+        $page = $container[$lastId];
+        return $page;
+    }
 
+    public function editAction()
+    {
+        $containerName = 'default';
+        $id = $this->params('id', null);
+        if ($id === null)
+            return false; //undefined id or create new menu
+
+        $config = $this->getServiceLocator()->get('config');
+        $navigationAsArray = $config['navigation'][$containerName];
+        
+        PageMvc::setDefaultRouter($this->getEvent()->getRouter());
+        $container = new Navigation($navigationAsArray);
+
+        $page = $this->findPageById($id, $container);
         $form = new PageForm();
         $form->setInputFilter(new PageFilter);
 
@@ -76,26 +111,22 @@ class AdminPageController extends AbstractActionController
             $form->setData($prg);
             if ($form->isValid()) {
                 try {
-
                     $data = $form->getData();
                     unset($data['submit']);
                     unset($data['csrf']);
                     $page->set('params', array_merge($page->get('params'), $data['params']));
                     unset($data['params']);
                     //if ($data['order'] === '') $data['order'] = null;
-                    if ($data['order'] == 0) $data['order'] = null;
-
-                    $container->toArray();
+                    if ($data['order'] == 0)
+                        $data['order'] = null;
                     $page->setOptions($data);
-                    $navigationArray = $navigationDefault->toArray();
 
-                    $this->cleanupNavigationArray($navigationArray);
+                    $containerToArray = $container->toArray();
+                    $this->cleanupNavigationArray($containerToArray);
 
-                    $varExport = var_export($navigationArray, true);
-                    $varExport = preg_replace("/=> \n + array/", '=> array', $varExport);
-                    $varExport = str_replace("  ", '    ', $varExport);
-                    $varExport = preg_replace("/[0-9]+ => /", '', $varExport);
-                    file_put_contents("config/constructed.$name.php", "<?php\nreturn " . $varExport . ";\n");
+                    $filePath = "config/constructed/navigation.$containerName.php";
+                    file_put_contents($filePath, $this->varExportPretty($containerToArray));
+
                     $this->flashMessenger()->addSuccessMessage('Chanches was saved');
                     //return $this->redirect()->toUrl($redirectUrl);
                 } catch (\Exception $exc) {
@@ -109,7 +140,7 @@ class AdminPageController extends AbstractActionController
 
         return array(
             'container' => $container,
-            'name'      => $name,
+            'name'      => $containerName,
             'id'        => $id,
             'page'      => $page,
             'form'      => $form,
