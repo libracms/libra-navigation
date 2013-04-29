@@ -1,4 +1,12 @@
-<h2><?php echo $this->translate(sprintf('Container name: %s', $name)) //@todo: should do dropdown ?></h2>
+<?php
+$urlCreate = $this->url('admin/libra-navigation/page',
+    array('action' => 'edit', 'id' => $id . '.')
+);
+?>
+
+<h2><?php echo $this->translate(sprintf('Container name: %s', $name)) //@todo: should do dropdown ?>
+    <a href="<?php echo $urlCreate ?>"><i class="icon-plus pull-right" title="Create"></i></a>
+</h2>
 <?php if ($id === null ) { ?><h3><?php echo $this->translate(sprintf('Menus')); ?></h3><?php } ?>
 <?php if ($id === '0' ) { ?><h3><?php echo $this->translate(sprintf('Submenus')); ?></h3><?php } ?>
 <table class="table table-bordered table-striped">
@@ -20,12 +28,18 @@
     $counter = 0;
     //$container = $container->toArray();
     foreach ($container as $key => $item) {
-        $newId = $id === null ? $counter : "$id.$counter";
+        $itemId = $id === null ? $counter : "$id.$counter";
         $url = $this->url('admin/libra-navigation/pages',
-            array('action' => 'list', 'id' => $newId)
+            array('action' => 'list', 'id' => $itemId)
         );
         $urlEdit = $this->url('admin/libra-navigation/page',
-            array('action' => 'edit', 'id' => $newId)
+            array('action' => 'edit', 'id' => $itemId)
+        );
+        $urlCreateSubpage = $this->url('admin/libra-navigation/page',
+            array('action' => 'edit', 'id' => $itemId . '.')
+        );
+        $urlDelete = $this->url('admin/libra-navigation/page',
+            array('action' => 'delete', 'id' => $itemId)
         );
         ?>
         <tr>
@@ -52,9 +66,9 @@
                 <div class="entity-actions">
                     <i class="icon-tasks entity-actions-enter"></i>
                     <div class="entity-actions-group">
-                        <a href="#"><i class="icon-ok entity-action-left" title="Set visible"></i></a>
+                        <a href="<?php echo $urlCreateSubpage ?>"><i class="icon-plus entity-action-left" title="Create subpage"></i></a>
                         <a href="<?php echo $urlEdit ?>"><i class="icon-pencil entity-action-up" title="Edit"></i></a>
-                        <a href="#"><i class="icon-off entity-action-down" title="Unset visible"></i></a>
+                        <a href="<?php echo $urlDelete ?>"><i class="icon-remove entity-action-down" title="Unset visible"></i></a>
                     </div>
                 </div>
             </td>

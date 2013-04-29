@@ -33,7 +33,7 @@ class PageFilter extends InputFilter
         ));
         $this->add(array(
             'name'       => 'route',
-            'required'   => true,
+            'required'   => false,
             'filters'    => array(
                 array('name' => 'StringTrim',),
             ),

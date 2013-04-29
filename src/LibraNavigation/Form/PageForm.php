@@ -16,17 +16,20 @@ class PageForm extends Form
     {
         parent::__construct($name);
         $this->setAttribute('method', 'POST');
-        $this->add(array(
-            'name' => 'id',
-            'attributes' => array(
-                'type' => 'hidden',
-                'value' => '0',
-            ),
+
+        $type = new Element\Select('type');
+        $type->setLabel('Type: * ');
+        $type->setValueOptions(array(
+            'uri' => 'Uri',
+            'mvc' => 'Mvc'
         ));
+        $type->setValue('mvc');
+        $this->add($type);
+
         $this->add(array(
             'name' => 'label',
             'options' => array(
-                'label' => 'Label: *',
+                'label' => 'Label: * ',
             ),
             'attributes' => array(
                 'type' => 'text',
@@ -46,7 +49,7 @@ class PageForm extends Form
         $this->add(array(
             'name' => 'route',
             'options' => array(
-                'label' => 'Route: *',
+                'label' => 'Route:',
             ),
             'attributes' => array(
                 'type' => 'text',

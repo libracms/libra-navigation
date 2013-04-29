@@ -20,12 +20,12 @@
     $counter = 0;
     //$container = $container->toArray();
     foreach ($container as $key => $item) {
-        $newId = $id === null ? $counter : "$id.$counter";
+        $itemId = $id === null ? $counter : "$id.$counter";
         $url = $this->url('admin/libra-navigation/pages',
-            array('action' => 'list', 'id' => $newId)
+            array('action' => 'list', 'id' => $itemId)
         );
         $urlEdit = $this->url('admin/libra-navigation/page',
-            array('action' => 'edit', 'id' => $newId)
+            array('action' => 'edit', 'id' => $itemId)
         );
         ?>
         <tr>

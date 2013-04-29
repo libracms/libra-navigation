@@ -7,11 +7,13 @@
 
 namespace LibraNavigation\Controller;
 
+use Exception;
 use LibraNavigation\Form\PageFilter;
 use LibraNavigation\Form\PageForm;
 use Zend\Http\PhpEnvironment\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Navigation\Navigation;
+use Zend\Navigation\Page\AbstractPage;
 use Zend\Navigation\Page\Mvc as PageMvc;
 
 /**
@@ -21,6 +23,31 @@ use Zend\Navigation\Page\Mvc as PageMvc;
  */
 class AdminPageController extends AbstractActionController
 {
+    protected $containerName = 'default';
+
+    /**
+     * Determ if is it creating of new page
+     * @var bool
+     */
+    protected $newPage = false;
+
+    /**
+     * Parent page
+     * @var AbstractPage
+     */
+    protected $parentPage;
+
+    /**
+     * Id specification of parent id
+     * @var string
+     */
+    protected $parendIdSpec;
+
+    public function isCreatePage()
+    {
+        return (bool) $this->newPage;
+    }
+
     public function createAction()
     {
 
@@ -64,31 +91,62 @@ class AdminPageController extends AbstractActionController
         return $str;
     }
 
+    protected function containerName()
+    {
+        return $this->containerName;
+    }
+
+    protected function saveNavigation($container)
+    {
+        $containerToArray = $container->toArray();
+        $this->cleanupNavigationArray($containerToArray);
+
+        $filePath = "config/constructed/navigation.{$this->containerName()}.php";
+        return file_put_contents($filePath, $this->varExportPretty($containerToArray));
+    }
+
+
     /**
-     *
+     * leading ',' mean creating of new page
      * @param string $idString
-     * @param \Zend\Navigation\Navigation $container
-     * @return \Zend\Navigation\Page\AbstractPage
+     * @param Navigation $container
+     * @return AbstractPage
      */
     protected function findPageById($idString, Navigation $container)
     {
         $ids = explode('.', $idString);
         $lastId = array_pop($ids);
+        $this->parendIdSpec = implode('.', $ids);
+
         foreach ($ids as $id) {
             $container = array_values($container->getPages());
-            if (!isset($container[$id]) || !$container[$id]->hasPages()) {
-                return $this->notFoundAction(); //@todo need implement create action
+            if (!isset($container[$id])) {
+                return $this->notFoundAction();
             }
             $container = $container[$id];
         }
+        $this->parentPage = $container;
+
+        if ($lastId === '') {  //test for leading '.'
+            $this->newPage = true;
+            return 1; //create page
+        }
+
         $container = array_values($container->getPages());
+
+        if (!isset($container[$lastId])) {  //test out of range
+            //throw new \InvalidArgumentException('Wrong id. Those page not found.');
+            return $this->notFoundAction();
+        }
+        
         $page = $container[$lastId];
+
         return $page;
     }
 
     public function editAction()
     {
-        $containerName = 'default';
+        $containerName = $this->containerName();
         $id = $this->params('id', null);
         if ($id === null)
             return false; //undefined id or create new menu
@@ -114,28 +172,33 @@ class AdminPageController extends AbstractActionController
                     $data = $form->getData();
                     unset($data['submit']);
                     unset($data['csrf']);
-                    $page->set('params', array_merge($page->get('params'), $data['params']));
-                    unset($data['params']);
                     //if ($data['order'] === '') $data['order'] = null;
                     if ($data['order'] == 0)
                         $data['order'] = null;
-                    $page->setOptions($data);
+                    if ($data['route'] === '')
+                        $data['route'] = null;
+                    if (!$page instanceof AbstractPage) {  //if new page => create
+                        $page = AbstractPage::factory($data);
+                        $this->parentPage->addPage($page);
+                    } else {
+                        $page->set('params', array_merge($page->get('params'), $data['params']));
+                        unset($data['params']);
+                        $page->setOptions($data);
+                    }
 
-                    $containerToArray = $container->toArray();
-                    $this->cleanupNavigationArray($containerToArray);
-
-                    $filePath = "config/constructed/navigation.$containerName.php";
-                    file_put_contents($filePath, $this->varExportPretty($containerToArray));
+                    $this->saveNavigation($container);
 
                     $this->flashMessenger()->addSuccessMessage('Chanches was saved');
                     //return $this->redirect()->toUrl($redirectUrl);
-                } catch (\Exception $exc) {
+                } catch (Exception $exc) {
                     $this->flashMessenger()->addErrorMessage(sprintf('DB error. May be duplicate entry. %s', $exc->getMessage()));
                     throw $exc;
                 }
             }
         } elseif ($prg === false) {  //as usual, first GET query
-            $form->setData($page);
+            if ($page instanceof AbstractPage) {
+                $form->setData($page);
+            }
         }
 
         return array(
@@ -149,7 +212,28 @@ class AdminPageController extends AbstractActionController
 
     public function deleteAction()
     {
+        $idSpec = $this->params('id');
 
+        $config = $this->getServiceLocator()->get('config');
+        $navigationAsArray = $config['navigation'][$this->containerName()];
+        
+        PageMvc::setDefaultRouter($this->getEvent()->getRouter());
+        $container = new Navigation($navigationAsArray);
+
+        $page = $this->findPageById($idSpec, $container);
+        if (!$page instanceof AbstractPage)
+            return $this->notFoundAction ();
+        
+        $this->parentPage->removePage($page);
+        $this->saveNavigation($container);
+
+        $parentIdSpec = $this->parendIdSpec;
+        if (!$this->parentPage->hasPages()) {
+            $parentIds = explode ('.', $this->parendIdSpec);
+            array_pop($parentIds);
+            $parentIdSpec = implode('.', $parentIds);
+        }
+        return $this->redirect()->toRoute('admin/libra-navigation/pages', array('id' => $parentIdSpec));
     }
 
     public function publishAction()
@@ -161,5 +245,4 @@ class AdminPageController extends AbstractActionController
     {
 
     }
-
 }
