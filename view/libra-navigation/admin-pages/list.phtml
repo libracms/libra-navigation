@@ -20,6 +20,7 @@ $urlCreate = $this->url('admin/libra-navigation/page',
             <th><?php echo $this->translate('Href') ?></th>
             <th width="50"><?php echo $this->translate('Order') ?></th>
             <th width="60"><?php echo $this->translate('Pages #') ?></th>
+            <th width="60"><?php echo $this->translate('Visibility') ?></th>
             <th width="1%"><?php echo $this->translate('') ?></th>
         </tr>
     </thead>
@@ -40,6 +41,12 @@ $urlCreate = $this->url('admin/libra-navigation/page',
         );
         $urlDelete = $this->url('admin/libra-navigation/page',
             array('action' => 'delete', 'id' => $itemId)
+        );
+        $urlVisibility = $this->url('admin/libra-navigation/page',
+            array('action' => 'edit', 'id' => $itemId),
+            array('query' => array(
+                'visible' => !$item->isVisible()
+            ))
         );
         ?>
         <tr>
@@ -62,6 +69,10 @@ $urlCreate = $this->url('admin/libra-navigation/page',
             <td><?php echo $item->getHref() ?></td>
             <td><?php echo $item->getOrder() ?></td>
             <td><?php echo $item->count() ?></td>
+            <td><a href="<?php echo $urlVisibility ?>" title="<?php echo $this->translate('Click to toggle vibility') ?>">
+                    <?php echo $this->translate($item->isVisible() ? 'On' : 'Off') ?>
+                </a>
+            </td>
             <td>
                 <div class="entity-actions">
                     <i class="icon-tasks entity-actions-enter"></i>

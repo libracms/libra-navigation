@@ -23,7 +23,7 @@ use Zend\Navigation\Page\Mvc as PageMvc;
  */
 class AdminPageController extends AbstractActionController
 {
-    protected $containerName = 'default';
+    protected $containerName;
 
     /**
      * Determ if is it creating of new page
@@ -43,14 +43,9 @@ class AdminPageController extends AbstractActionController
      */
     protected $parendIdSpec;
 
-    public function isCreatePage()
+    protected function isCreatePage()
     {
         return (bool) $this->newPage;
-    }
-
-    public function createAction()
-    {
-
     }
 
     protected function cleanupNavigationArray(array &$array)
@@ -93,6 +88,11 @@ class AdminPageController extends AbstractActionController
 
     protected function containerName()
     {
+        if ($this->containerName === null) {
+            $config = $this->serviceLocator->get('config');
+            $this->containerName = $config['libra_navigation']['container_name'];
+        }
+
         return $this->containerName;
     }
 
@@ -101,7 +101,10 @@ class AdminPageController extends AbstractActionController
         $containerToArray = $container->toArray();
         $this->cleanupNavigationArray($containerToArray);
 
-        $filePath = "config/constructed/navigation.{$this->containerName()}.php";
+        $config = $this->serviceLocator->get('config');
+        $pathPattern = $config['libra_navigation']['save_pattern'];
+        $filePath = sprintf($pathPattern, $this->containerName());
+
         return file_put_contents($filePath, $this->varExportPretty($containerToArray));
     }
 
@@ -156,8 +159,19 @@ class AdminPageController extends AbstractActionController
         
         PageMvc::setDefaultRouter($this->getEvent()->getRouter());
         $container = new Navigation($navigationAsArray);
-
         $page = $this->findPageById($id, $container);
+
+        $queryParams = $this->params()->fromQuery();
+        if (!empty($queryParams)) {
+            if ($page instanceof AbstractPage) {  //not new page
+                if (isset($queryParams['visible'])) {
+                    $page->setVisible($queryParams['visible']);
+                }
+                $this->saveNavigation($container);
+            }
+            return $this->redirect()->toRoute('admin/libra-navigation/pages', array('id' => $this->parendIdSpec));
+        }
+
         $form = new PageForm();
         $form->setInputFilter(new PageFilter);
 
@@ -234,15 +248,5 @@ class AdminPageController extends AbstractActionController
             $parentIdSpec = implode('.', $parentIds);
         }
         return $this->redirect()->toRoute('admin/libra-navigation/pages', array('id' => $parentIdSpec));
-    }
-
-    public function publishAction()
-    {
-
-    }
-
-    public function unpublishAction()
-    {
-
     }
 }

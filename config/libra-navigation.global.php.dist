@@ -1,0 +1,9 @@
+<?php
+$config = array(
+    'container_name' => 'default',      //default container name to use
+    'save_pattern'   => 'config/constructed/navigation.%s.php',   //file where will be save containerl; %s - container_name
+);
+
+return array(
+    'libra_navigation' => $config,
+);

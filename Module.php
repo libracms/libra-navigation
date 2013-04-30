@@ -12,7 +12,6 @@ class Module implements
     AutoloaderProviderInterface,
     ConfigProviderInterface,
     ServiceProviderInterface
-
 {
     public function init(ModuleManager $moduleManager)
     {

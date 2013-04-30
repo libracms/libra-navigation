@@ -103,10 +103,10 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'libra-navigation/sitemap'      => 'LibraNavigation\Controller\SitemapController',
-            'libra-navigation/admin-containers'         => 'LibraNavigation\Controller\AdminContainersController',
-            'libra-navigation/admin-container'          => 'LibraNavigation\Controller\AdminContainerController',
-            'libra-navigation/admin-pages'   => 'LibraNavigation\Controller\AdminPagesController',
-            'libra-navigation/admin-page'    => 'LibraNavigation\Controller\AdminPageController',
+            'libra-navigation/admin-containers'     => 'LibraNavigation\Controller\AdminContainersController',
+            'libra-navigation/admin-container'      => 'LibraNavigation\Controller\AdminContainerController',
+            'libra-navigation/admin-pages'          => 'LibraNavigation\Controller\AdminPagesController',
+            'libra-navigation/admin-page'           => 'LibraNavigation\Controller\AdminPageController',
         ),
     ),
     'view_manager' => array(
@@ -116,7 +116,7 @@ return array(
     ),
 
     'libra_navigation' => array(
-        'container_name' => 'default'
+        'container_name' => 'default',
+        'save_pattern'   => 'config/constructed/navigation.%s.php',
     )
-
 );
