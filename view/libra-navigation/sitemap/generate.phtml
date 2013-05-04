@@ -5,7 +5,11 @@
   <?php foreach ($urlset as $url) {
       if (!isset($url['loc'])) continue; //error data
       echo '  <url>' . PHP_EOL;
-      echo '    <loc>' . $url['loc'] . '</loc>' . PHP_EOL;
+      $loc = $url['loc'];
+      if (strpos($loc, '://') === false) {
+          $loc = $this->serverUrl($url['loc']);
+      }
+      echo '    <loc>' . $loc . '</loc>' . PHP_EOL;
       if (isset($url['lastmod'])) echo '    <lastmod>' . $url['lastmod'] . '</lastmod>' . PHP_EOL;
       if (isset($url['changefreq'])) echo '    <changefreq>' . $url['changefreq'] . '</changefreq>' . PHP_EOL;
       if (isset($url['priority'])) echo '    <priority>' . $url['priority'] . '</priority>' . PHP_EOL;
