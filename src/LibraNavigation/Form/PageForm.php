@@ -20,8 +20,8 @@ class PageForm extends Form
         $type = new Element\Select('type');
         $type->setLabel('Type: * ');
         $type->setValueOptions(array(
-            'uri' => 'Uri',
-            'mvc' => 'Mvc'
+            'Zend\\Navigation\\Page\\Uri' => 'Uri',
+            'Zend\\Navigation\\Page\\Mvc' => 'Mvc'
         ));
         $type->setValue('mvc');
         $this->add($type);
