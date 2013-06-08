@@ -1,10 +1,9 @@
 {
     "name":         "libra/libra-navigation",
     "type":         "library",
-    "version":      "0.2.0",
     "description":  "Add navigation aware to Libra CMS",
     "keywords":     ["zf", "zf2", "zendframework", "cms", "libra"],
-    "homepage":     "http://www.libra-cms.ejoom.com",
+    "homepage":     "http://www.ejoom.com/libra-cms/",
     "time":         "2012-05-16",
     "licence":      "BSD-3-Clause",
     "authors": [
@@ -13,7 +12,7 @@
 
     "require": {
         "php":                              ">=5.3.3",
-        "libra/libra-app":                  "dev-default"
+        "libra/libra-app":                  "<1.0.0, >=0.4.0"
     },
 
     "require-dev": {
@@ -21,7 +20,7 @@
     },
 
     "autoload": {
-        "psr-0": {"Libra\\Navigation": "src"},
+        "psr-0": {"Libra\\Navigation\\": "src/"},
         "classmap": ["Module.php"]
     },
 
