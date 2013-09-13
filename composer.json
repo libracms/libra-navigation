@@ -15,20 +15,14 @@
         "libra/libra-app":                  "dev-master"
     },
 
-    "require-dev": {
-        
-    },
-
     "autoload": {
         "psr-0": {"Libra\\Navigation\\": "src/"},
         "classmap": ["Module.php"]
     },
 
-    "provide": {
-    },
-
-    "sugest": {
-
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.3.x-dev"
+        }
     }
-
 }
