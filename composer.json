@@ -15,7 +15,7 @@
     },
 
     "autoload": {
-        "psr-0": {"Libra\\Navigation\\": "src/"},
+        "psr-0": {"LibraNavigation\\": "src/"},
         "classmap": ["Module.php"]
     },
 
